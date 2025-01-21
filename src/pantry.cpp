@@ -1,3 +1,4 @@
+/* Tu bi jako dobro dosli exepctioni ako se ne unese nesto od trazenih podataka kako je zamisljeno baciti exepction i ponovno traziti unos */
 #include "pantry.h"
 #include "liquid.h"
 #include "solid.h"
