@@ -1,36 +1,34 @@
-#include <iostream>
+#include "pantry.h"
 #include "liquid.h"
 #include "solid.h"
 #include "powder.h"
 #include "piece.h"
+#include <iostream>
 
 int main()
 {
-    std::cout << "=== Liquid Ingredients ===\n";
-    liquid water("Water", 1500);
-    liquid milk("Milk", 500);
-    liquid oil("Oil", 250);
-    water.display();
-    milk.display();
-    oil.display();
+    Pantry myPantry;
 
-    std::cout << "\n===  Solid Ingredients ===\n";
-    solid meat("Meat", 500);
-    solid cheese("Cheese", 200);
-    meat.display();
-    cheese.display();
+    // Test praznog pantryja
+    std::cout << "Testing empty pantry:\n";
+    myPantry.display();
 
-    std::cout << "\n===  Powder Ingredients ===\n";
-    powder flour("Flour", 300);
-    powder sugar("Sugar", 100);
-    flour.display();
-    sugar.display();
+    // Test dodavanja sastojaka
+    std::cout << "\nAdding ingredients:\n";
+    myPantry.add();
+    myPantry.add();
 
-    std::cout << "\n===  Piece Ingredients ===\n";
-    piece eggs("Eggs", 6);
-    piece tomatoes("Tomatoes", 4);
-    eggs.display();
-    tomatoes.display();
+    // Prikaz trenutnog sadrzaja
+    std::cout << "\nDisplaying pantry contents:\n";
+    myPantry.display();
+
+    // Test removanja sastojka
+    std::cout << "\nRemoving an ingredient:\n";
+    myPantry.remove();
+
+    // Prikaz updatanog sadrzaja
+    std::cout << "\nDisplaying updated pantry contents:\n";
+    myPantry.display();
 
     return 0;
 }

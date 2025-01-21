@@ -12,5 +12,6 @@ protected:
 public:
     ingredient(std::string name, double quantity);
     virtual ~ingredient() = default;
+    virtual const std::string &getName() const;
     void display();
 };

@@ -8,6 +8,5 @@ public:
     ~liquid() override = default;
 
 protected:
-    // Implements the pure virtual function from base class
     std::string measure() const override;
 };
