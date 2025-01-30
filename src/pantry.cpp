@@ -1,9 +1,9 @@
-/* Tu bi jako dobro dosli exepctioni ako se ne unese nesto od trazenih podataka kako je zamisljeno baciti exepction i ponovno traziti unos */
 #include "pantry.h"
 #include "liquid.h"
 #include "solid.h"
 #include "powder.h"
 #include "piece.h"
+#include "exception.h"
 #include <iostream>
 #include <algorithm>
 
@@ -20,40 +20,51 @@ Pantry::~Pantry()
 
 void Pantry::add()
 {
-    std::cout << "\nSelect ingredient type to add:\n\n";
-    std::cout << "1. Liquid - L\n2. Solid - KG\n3. Powder - g\n4. Piece\n\n";
-
-    int choice;
-    std::cin >> choice;
-
-    std::string name;
-    double quantity;
-
-    std::cout << "\nEnter name: ";
-    std::cin >> name;
-    std::cout << "\nEnter quantity: ";
-    std::cin >> quantity;
-
-    ingredient *ing = nullptr;
-    switch (choice)
+    try
     {
-    case 1:
-        ing = new liquid(name, quantity);
-        break;
-    case 2:
-        ing = new solid(name, quantity);
-        break;
-    case 3:
-        ing = new powder(name, quantity);
-        break;
-    case 4:
-        ing = new piece(name, quantity);
-        break;
+        std::cout << "\nSelect ingredient type to add:\n\n";
+        std::cout << "1. Liquid - L\n2. Solid - KG\n3. Powder - g\n4. Piece\n\n";
+
+        int choice;
+        std::cin >> choice;
+        validateChoice(choice);
+
+        std::string name;
+        std::cout << "\nEnter name: ";
+        std::cin >> name;
+        validateName(name);
+
+        double quantity;
+        std::cout << "\nEnter quantity: ";
+        std::cin >> quantity;
+        validateQuantity(quantity);
+
+        ingredient *ing = nullptr;
+        switch (choice)
+        {
+        case 1:
+            ing = new liquid(name, quantity);
+            break;
+        case 2:
+            ing = new solid(name, quantity);
+            break;
+        case 3:
+            ing = new powder(name, quantity);
+            break;
+        case 4:
+            ing = new piece(name, quantity);
+            break;
+        }
+
+        if (ing)
+        {
+            ingredients.push_back(ing);
+        }
     }
-
-    if (ing)
+    catch (const kitchen_exception &e)
     {
-        ingredients.push_back(ing);
+        std::cout << "Error: " << e.what() << "\n";
+        return;
     }
 }
 
@@ -77,26 +88,40 @@ void Pantry::remove()
     {
         delete *it;
         ingredients.erase(it);
-        std::cout << "Ingredient removed.\n";
+        std::cout << name << " removed from pantry.\n";
     }
     else
     {
-        std::cout << "Ingredient not found.\n";
+        std::cout << name << " not found in pantry.\n";
     }
 }
 
 void Pantry::display()
 {
+    std::cout << "\n-------- Pantry Contents --------\n";
     if (ingredients.empty())
     {
         std::cout << "Pantry is empty.\n";
         return;
     }
 
-    std::cout << "\n=== Pantry Contents ===\n";
     for (auto *ing : ingredients)
     {
+        if (!ing)
+        {
+            std::cout << "Warning: Invalid ingredient found\n";
+            continue;
+        }
         ing->display();
     }
-    std::cout << "=====================\n\n";
+    std::cout << "----------------------------\n\n";
+}
+
+ingredient *Pantry::findIngredient(const std::string &name)
+{
+    auto it = std::find_if(ingredients.begin(), ingredients.end(),
+                           [&name](const ingredient *ing)
+                           { return ing->getName() == name; });
+
+    return (it != ingredients.end()) ? *it : nullptr;
 }

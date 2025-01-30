@@ -1,34 +1,48 @@
+#include "dish.h"
 #include "pantry.h"
-#include "liquid.h"
-#include "solid.h"
-#include "powder.h"
-#include "piece.h"
 #include <iostream>
 
 int main()
 {
+    // pantry
     Pantry myPantry;
+    myPantry.add(); // dodat "voda" za testing
+    myPantry.add(); // dodat "brasno" za testing
+    myPantry.add(); // dodat "test" za testing brisanja
 
-    // Test praznog pantryja
-    std::cout << "Testing empty pantry:\n";
+    // Display pantrya
+    std::cout << "\nCurrent Pantry: \n";
     myPantry.display();
 
-    // Test dodavanja sastojaka
-    std::cout << "\nAdding ingredients:\n";
-    myPantry.add();
-    myPantry.add();
+    // Brisanje ingredienta
+    std::cout << "\nTesting Ingredient Removal: \n";
+    myPantry.remove(); // brisanje "test" za testing
 
-    // Prikaz trenutnog sadrzaja
-    std::cout << "\nDisplaying pantry contents:\n";
+    // Display updatanog pantrya
+    std::cout << "\nUpdated Pantry: \n";
     myPantry.display();
 
-    // Test removanja sastojka
-    std::cout << "\nRemoving an ingredient:\n";
-    myPantry.remove();
+    // Dish stvaranje
+    std::cout << "\nTesting Dish Creation: \n";
+    Dish carbonara(myPantry, "Pasta Carbonara");
 
-    // Prikaz updatanog sadrzaja
-    std::cout << "\nDisplaying updated pantry contents:\n";
-    myPantry.display();
+    // Dodavanje ingredienta
+    std::cout << "\nTesting Adding Ingredients: \n";
+
+    carbonara.addIngredient(myPantry.findIngredient("voda"), 0.5);
+    carbonara.addIngredient(myPantry.findIngredient("brasno"), 200);
+
+    // Display recepta
+    std::cout << "\nCurrent Recipe: \n";
+    carbonara.display();
+
+    // Brisanje ingredienta
+    std::cout << "\nTesting ingredient removal: \n";
+    carbonara.removeIngredient("voda");
+
+    // Display updatanog recepta
+    std::cout << "\n Updated Recipe: \n";
+    carbonara.display();
 
     return 0;
 }

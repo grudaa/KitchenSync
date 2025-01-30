@@ -18,4 +18,6 @@ public:
     void add();
     void remove();
     void display();
+
+    ingredient *findIngredient(const std::string &name);
 };
